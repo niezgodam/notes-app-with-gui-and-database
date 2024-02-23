@@ -1,9 +1,5 @@
 import mysql.connector
-import getpass
-import random
 from tkinter import *
-from tkinter import messagebox
-from tkinter import ttk
 import os
 import sys
 import subprocess
