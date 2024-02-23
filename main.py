@@ -8,21 +8,27 @@ import os
 import sys
 import subprocess
 
-#password = getpass.getpass("Enter the passowrd: ")
-password = "root"
+###USING IN ENV
+import os
+from dotenv import load_dotenv
+load_dotenv()
+###
 
 
 mydb = mysql.connector.connect(
-    host = 'localhost',
-    user = 'root',
-    passwd = f"{password}",
+    host = os.getenv('HOST'),
+    user = os.getenv('USER'),
+    password = os.getenv('PASSWORD'),
 )
 
+name_of_schema = os.getenv("SCHEMA")
+background_path = os.getenv("BACKGROUNDPATH")
+notes_picture_path = os.getenv("NOTESPATH")
 cur = mydb.cursor()
 
     
 def loadingDB():
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'SELECT COUNT(notes_id) FROM monday')
     for i in cur:
         count = i[0]
@@ -33,7 +39,7 @@ def loadingDB():
 
 
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'SELECT COUNT(notes_id) FROM tuesday')
     for i in cur:
         count = i[0]
@@ -43,7 +49,7 @@ def loadingDB():
         tuesday_listbox.insert(i[0],i[1])
 
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'SELECT COUNT(notes_id) FROM wednesday')
     for i in cur:
         count = i[0]
@@ -53,7 +59,7 @@ def loadingDB():
         wednesday_listbox.insert(i[0],i[1])
 
     
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'SELECT COUNT(notes_id) FROM thursday')
     for i in cur:
         count = i[0]
@@ -64,7 +70,7 @@ def loadingDB():
 
 
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'SELECT COUNT(notes_id) FROM friday')
     for i in cur:
         count = i[0]
@@ -74,7 +80,7 @@ def loadingDB():
         friday_listbox.insert(i[0],i[1])
 
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'SELECT COUNT(notes_id) FROM saturday')
     for i in cur:
         count = i[0]
@@ -84,7 +90,7 @@ def loadingDB():
         saturday_listbox.insert(i[0],i[1])
 
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'SELECT COUNT(notes_id) FROM sunday')
     for i in cur:
         count = i[0]
@@ -123,11 +129,11 @@ def selected_choose(event):
     x = int((screen_width/2)-(WINDOW_WIDTH/2))
     y = int((screen_height/2)-(WINDOW_HEIGHT/2))
     new_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'SELECT notes FROM {day} WHERE notes_id = {selected[0]+1}')
     for i in cur:
         textxd = i[0]
-    backgroundImagenew = PhotoImage(file="D:\\snake wersja demon\\REALPROJECT\\NOTESAPP\\GRAPHICS\\NOTES.png")
+    backgroundImagenew = PhotoImage(file=notes_picture_path)
     new_label = Label(new_window,image=backgroundImagenew,width=600,height=600)
     new_label.pack()
     text_label = Label(new_window, text=textxd,background="#abdddb", font=("Ink Free",18),width=38,height=17,wraplength=500)
@@ -139,7 +145,7 @@ def selected_choose(event):
 
 def add_monday_data():
     input_text = text.get("1.0", END)
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute('SELECT COUNT(notes_id) FROM monday')
     for  i in cur:
         count = i
@@ -164,7 +170,7 @@ def add_monday():
     new_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
 
 
-    backgroundImagenew = PhotoImage(file="D:\\snake wersja demon\\REALPROJECT\\NOTESAPP\\GRAPHICS\\NOTES.png")
+    backgroundImagenew = PhotoImage(file=notes_picture_path)
     new_label = Label(new_window,image=backgroundImagenew,width=600,height=600,compound="top")
     new_label.pack()
 
@@ -182,7 +188,7 @@ def add_monday():
 def delete_monday():
     selected = monday_listbox.curselection()
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'DELETE FROM monday WHERE notes_id = {selected[0]+1}')
 
 
@@ -200,7 +206,7 @@ def delete_monday():
 
 def add_tuesday_data():
     input_text = text.get("1.0", END)
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute('SELECT COUNT(notes_id) FROM tuesday')
     for  i in cur:
         count = i
@@ -225,7 +231,7 @@ def add_tuesday():
     new_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
 
 
-    backgroundImagenew = PhotoImage(file="D:\\snake wersja demon\\REALPROJECT\\NOTESAPP\\GRAPHICS\\NOTES.png")
+    backgroundImagenew = PhotoImage(file=notes_picture_path)
     new_label = Label(new_window,image=backgroundImagenew,width=600,height=600,compound="top")
     new_label.pack()
 
@@ -243,7 +249,7 @@ def add_tuesday():
 def delete_tuesday():
     selected = tuesday_listbox.curselection()
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'DELETE FROM tuesday WHERE notes_id = {selected[0]+1}')
 
 
@@ -262,7 +268,7 @@ def delete_tuesday():
 
 def add_wednesday_data():
     input_text = text.get("1.0", END)
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute('SELECT COUNT(notes_id) FROM wednesday')
     for  i in cur:
         count = i
@@ -287,7 +293,7 @@ def add_wednesday():
     new_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
 
 
-    backgroundImagenew = PhotoImage(file="D:\\snake wersja demon\\REALPROJECT\\NOTESAPP\\GRAPHICS\\NOTES.png")
+    backgroundImagenew = PhotoImage(file=notes_picture_path)
     new_label = Label(new_window,image=backgroundImagenew,width=600,height=600,compound="top")
     new_label.pack()
 
@@ -304,7 +310,7 @@ def add_wednesday():
 def delete_wednesday():
     selected = wednesday_listbox.curselection()
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'DELETE FROM wednesday WHERE notes_id = {selected[0]+1}')
 
 
@@ -323,7 +329,7 @@ def delete_wednesday():
 
 def add_thursday_data():
     input_text = text.get("1.0", END)
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute('SELECT COUNT(notes_id) FROM thursday')
     for  i in cur:
         count = i
@@ -348,7 +354,7 @@ def add_thursday():
     new_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
 
 
-    backgroundImagenew = PhotoImage(file="D:\\snake wersja demon\\REALPROJECT\\NOTESAPP\\GRAPHICS\\NOTES.png")
+    backgroundImagenew = PhotoImage(file=notes_picture_path)
     new_label = Label(new_window,image=backgroundImagenew,width=600,height=600,compound="top")
     new_label.pack()
 
@@ -366,7 +372,7 @@ def add_thursday():
 def delete_thursday():
     selected = thursday_listbox.curselection()
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'DELETE FROM thursday WHERE notes_id = {selected[0]+1}')
 
 
@@ -384,7 +390,7 @@ def delete_thursday():
 
 def add_friday_data():
     input_text = text.get("1.0", END)
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute('SELECT COUNT(notes_id) FROM friday')
     for  i in cur:
         count = i
@@ -409,7 +415,7 @@ def add_friday():
     new_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
 
 
-    backgroundImagenew = PhotoImage(file="D:\\snake wersja demon\\REALPROJECT\\NOTESAPP\\GRAPHICS\\NOTES.png")
+    backgroundImagenew = PhotoImage(file=notes_picture_path)
     new_label = Label(new_window,image=backgroundImagenew,width=600,height=600,compound="top")
     new_label.pack()
 
@@ -427,7 +433,7 @@ def add_friday():
 def delete_friday():
     selected = friday_listbox.curselection()
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'DELETE FROM friday WHERE notes_id = {selected[0]+1}')
 
 
@@ -446,7 +452,7 @@ def delete_friday():
 
 def add_saturday_data():
     input_text = text.get("1.0", END)
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute('SELECT COUNT(notes_id) FROM saturday')
     for  i in cur:
         count = i
@@ -471,7 +477,7 @@ def add_saturday():
     new_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
 
 
-    backgroundImagenew = PhotoImage(file="D:\\snake wersja demon\\REALPROJECT\\NOTESAPP\\GRAPHICS\\NOTES.png")
+    backgroundImagenew = PhotoImage(file=notes_picture_path)
     new_label = Label(new_window,image=backgroundImagenew,width=600,height=600,compound="top")
     new_label.pack()
 
@@ -489,7 +495,7 @@ def add_saturday():
 def delete_saturday():
     selected = saturday_listbox.curselection()
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'DELETE FROM saturday WHERE notes_id = {selected[0]+1}')
 
 
@@ -506,7 +512,7 @@ def delete_saturday():
 
 def add_sunday_data():
     input_text = text.get("1.0", END)
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute('SELECT COUNT(notes_id) FROM sunday')
     for  i in cur:
         count = i
@@ -531,7 +537,7 @@ def add_sunday():
     new_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
 
 
-    backgroundImagenew = PhotoImage(file="D:\\snake wersja demon\\REALPROJECT\\NOTESAPP\\GRAPHICS\\NOTES.png")
+    backgroundImagenew = PhotoImage(file=notes_picture_path)
     new_label = Label(new_window,image=backgroundImagenew,width=600,height=600,compound="top")
     new_label.pack()
 
@@ -549,7 +555,7 @@ def add_sunday():
 def delete_sunday():
     selected = sunday_listbox.curselection()
 
-    cur.execute('USE notesapp')
+    cur.execute(f'USE {name_of_schema}')
     cur.execute(f'DELETE FROM sunday WHERE notes_id = {selected[0]+1}')
 
 
@@ -595,7 +601,7 @@ window.bind("<Double-Button-1>",selected_choose)
 
 
 
-backgroundImage = PhotoImage(file="D:\\snake wersja demon\\REALPROJECT\\NOTESAPP\\GRAPHICS\\BACKGROUND.png")
+backgroundImage = PhotoImage(file=background_path)
 background_label = Label(window,image=backgroundImage,compound="top").pack()
 
 
